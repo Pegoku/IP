@@ -4,7 +4,7 @@
 
 #define VIDES 10
 #define AnswLen 4
-#define DEBUG 1
+#define DEBUG 0
 
 int checkIfIn(int *a, int b)
 {
