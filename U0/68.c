@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int calcQuadrat(int num){
-    return num * num;
+int checkIfIn(int * a,int b)
+{
+    for (int i = 0; i < lenof(a); i++)
 }
 
 int main() {
-    printf("%d", calcQuadrat(4));
+    checkIfIn
     return 0;
 }
