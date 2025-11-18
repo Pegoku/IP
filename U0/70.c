@@ -11,7 +11,7 @@ int main() {
     }
     fclose(fptr);
 
-    FILE* fptr2 = fopen("file2.txt", "a");
+    FILE* fptr2 = fopen("file2.txt", "w");
     char n[2] = {'\n'};
     for (int i = 1; i>=0; i--){
         
