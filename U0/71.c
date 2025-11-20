@@ -1,10 +1,15 @@
 #include <stdio.h>
-
-int calcQuadrat(int num){
-    return num * num;
-}
-
+#include <stdlib.h>
 int main() {
-    printf("%d", calcQuadrat(4));
+    int nums[10];
+    FILE* fptr = fopen("file.txt", "w");
+
+    for (int i = 0; i<10; i++){
+        scanf("%d", &nums[i]);
+        nums[i] = nums[i]*5;
+        char str[128];
+        sprintf(str, "%d\n", nums[i]);
+        fputs(str,fptr);
+    }
     return 0;
 }
