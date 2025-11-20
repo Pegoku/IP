@@ -1,10 +1,13 @@
 #include <stdio.h>
-
-int calcQuadrat(int num){
-    return num * num;
-}
-
+#include <string.h>
 int main() {
-    printf("%d", calcQuadrat(4));
+    FILE* fptr = fopen("registre.txt", "w");
+    char c[128];
+    while (1){
+        printf("Introdueix una frase: ");
+        fgets(c, 128, stdin);
+        if (strcmp(c, "fi\n") ==0) break;
+        fputs(c, fptr);
+    }
     return 0;
 }
