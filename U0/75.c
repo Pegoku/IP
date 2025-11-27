@@ -24,18 +24,19 @@ int main()
         fgets(a, sizeof(a), fptr2);
         
         int b = atoi(a);
-        if (b == prev) break;        
+        if (feof(fptr2)) break;        
 
         if (!min|| !max){
             min = b;
             max = b;
-        }
+        }   
 
         if (b < min) min = b; 
         if (b > max) max = b; 
 
         i++;
         prev = b;
+
     }
 
 
