@@ -16,6 +16,8 @@
         "__hash_table": "cpp",
         "__tree": "cpp",
         "forward_list": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "*.inc": "c",
+        "caca_types.h": "c"
     }
 }
