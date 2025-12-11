@@ -1,13 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 
-int main() {
-    struct dades
-    {
-        char grup[40];
-        int aula, numAlumnes;
-    };
-    
+struct dades
+{
+    char grup[40];
+    int aula, numAlumnes;
+};
+
+void printData(struct dades data)
+{
+    printf("Grup: %s, Aula: %d, Alumnes: %d\n", data.grup, data.aula, data.numAlumnes);
+}
+
+int main()
+{
     struct dades data[2];
     data[0].aula = 2;
     data[0].numAlumnes = 30;
@@ -17,11 +23,10 @@ int main() {
     data[1].numAlumnes = 26;
     strcpy(data[1].grup, "SMX2");
 
-    for (int i = 0; i<2; i++){
-
-    printf("Grup: %s, Aula: %d, Alumnes: %d\n", data[i].grup, data[i].aula, data[i].numAlumnes);
-
+    for (int i = 0; i < 2; i++)
+    {
+        printData(data[i]);
     }
-    
+
     return 0;
 }
