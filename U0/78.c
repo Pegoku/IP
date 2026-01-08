@@ -31,8 +31,9 @@ void createCl()
 
     printf("Llinatges: ");
     scanf("%s %s", llinatge1, llinatge2);
+    getchar(); // consume newline
 
-    printf("Direcció: \n");
+    printf("Direcció: ");
     fgets(direcció, 128, stdin);
     strtok(direcció, "\n");
 
@@ -44,6 +45,7 @@ void createCl()
 
     clear();
 
+    printf("Nombre de client: %d", numClients);
     printf("Nom: %s\n", nom);
     printf("Llinatges: %s %s\n", llinatge1, llinatge2);
     printf("Direcció: %s\n", direcció);
