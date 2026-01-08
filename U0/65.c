@@ -13,6 +13,7 @@ int checkIfIn(int * a, int n){
 int main() {
     int nums[6];
     srand(time(NULL));
+    rand();
     
     for (int i = 0; i<6; i++){
         int n;
