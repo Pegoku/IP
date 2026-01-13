@@ -100,8 +100,8 @@ void viewCl(int n)
 }
 
 void listCl(){
-    printf("%d", numClients);
-    if (numClients == 0) noCl(); return;
+    // printf("%d", numClients);
+    if (numClients == 0) {noCl(); return;}
     for (int i = 0; i<numClients; i++){
         printf("Client n. %d: %s %s, %s\n", i, clients[i].llinatge1, clients[i].llinatge2, clients[i].nom);
     }
