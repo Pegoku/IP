@@ -2,15 +2,19 @@
 #include <ctype.h>
 
 int isNum(int num){
-    return num * num;
+    if (num >=48 && num <= 57){
+        return 1;
+    }
+    return 0;
 }
 
 int main() {
-    char c;
+    int c;
     printf("Introdueix un caracter: ");
     scanf("%c", &c);
+    // printf("%c %d", c, c);
 
-    if (!isdigit(c)) printf("no ");    
+    if (!isNum(c)) printf("no ");    
     printf("es un digit");
 
     return 0;
