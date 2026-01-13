@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct client
 {
@@ -103,10 +104,44 @@ void listCl(){
     // printf("%d", numClients);
     if (numClients == 0) {noCl(); return;}
     for (int i = 0; i<numClients; i++){
+        if (i>0 && i%10==0){
+            printf("Mostrant %d-%d/%d (10) (N)ext (P)revious (S)top\n",i-10, i-1, numClients-1);
+            char c;
+            scanf("%c", c);
+            switch (tolower(c))
+            {
+            case 'n':
+                break;
+            case 'p':
+                if (i>10) i = i-10;
+                else printf("No es pot anar enrera, continuant");
+                break;
+            case 's':
+                return;
+            default:
+                printf("Opció incorrecte, continuant");
+                break;
+            }
+        }
         printf("Client n. %d: %s %s, %s\n", i, clients[i].llinatge1, clients[i].llinatge2, clients[i].nom);
     }
 }
 
+void populateCl(int n){
+    for (int i = 0; i<n; i++){
+
+    sprintf(clients[numClients].direcció, "%d", 27*i);
+    sprintf(clients[numClients].dni, "%dF", 31*i);
+    sprintf(clients[numClients].llinatge1, "%dF", 23*i);
+    sprintf(clients[numClients].llinatge2, "%dF", 21*i);
+    sprintf(clients[numClients].nom, "%dF", 29*i);
+    clients[numClients].tel = 17*i;
+
+    numClients++;
+    }
+
+    printf("Populated %d clients", numClients);
+}
 
 int main()
 {
@@ -146,6 +181,10 @@ int main()
         case 6:
             printf("Exiting...");
             break;
+        case 9:
+            int n;
+            scanf("%d", &n);
+            populateCl(n);
         default:
             printf("Opció no vàlida.");
             break;
@@ -154,6 +193,6 @@ int main()
 
 
     }
-    createCl();
+    // createCl();
 
 }
