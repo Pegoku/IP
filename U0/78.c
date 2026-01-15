@@ -19,7 +19,7 @@ int unClients[256] = {};
 
 void clr()
 {
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 100; i++)
     {
         printf("\n");
     }
@@ -109,6 +109,60 @@ void noCl(){
 
 void modCl(int n)
 {
+    
+    char nom[64], llinatge1[64], llinatge2[64], direcció[128], dni[16], ch;
+    int tel;
+
+    printf("Nom (%s): ", clients[n].nom);
+    scanf("%s", nom);
+    if (strlen(nom) <= 1) strcpy(nom, clients[n].nom);
+
+    printf("Llinatges (%s %s): ", clients[n].llinatge1, clients[n].llinatge2);
+    scanf("%s %s", llinatge1, llinatge2);
+    getchar(); // consume newline
+
+    printf("Direcció (%s): ", clients[n].direcció);
+    fgets(direcció, 128, stdin);
+    strtok(direcció, "\n");
+
+    printf("DNI (%s): ", clients[n].dni);
+    scanf("%s", dni);
+
+    printf("Nombre de telefón (%d): ", clients[n].tel);
+    scanf("%d", &tel);
+
+    clr();
+
+    printf("Nombre de client: %d\n", n);
+    printf("Nom: %s\n", nom);
+    printf("Llinatges: %s %s\n", llinatge1, llinatge2);
+    printf("Direcció: %s\n", direcció);
+    printf("DNI: %s\n", dni);
+    printf("Nombre de telefón: %d\n", tel);
+
+
+    printf("Son aquests valors correctes? (Y/n): ");
+    scanf("%c", &ch);
+
+    clearN();
+    if (ch == 'n') return;
+
+    strcpy(clients[numClients].direcció, direcció);
+    strcpy(clients[numClients].dni, dni);
+    strcpy(clients[numClients].llinatge1, llinatge1);
+    strcpy(clients[numClients].llinatge2, llinatge2);
+    strcpy(clients[numClients].nom, nom);
+    clients[numClients].tel = tel;
+
+    numClients++;
+    printf("Nom: %s\n", clients[n].nom);
+    printf("Llinatges: %s %s\n", clients[n].llinatge1, clients[n].llinatge2);
+    printf("Direcció: %s\n", clients[n].direcció);
+    printf("DNI: %s\n", clients[n].dni);
+    printf("Nombre de telefón: %d\n", clients[n].tel);
+    
+
+
 }
 
 void delCl(int n)
@@ -226,6 +280,7 @@ int main()
             clr();
             printf("Nombre del client a detallar: ");
             scanf("%d", &n);
+            clearN();
             viewCl(n);
             break;
         case 4:
