@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
+
+#define DEV
 
 typedef struct client
 {
@@ -10,15 +13,40 @@ typedef struct client
 
 } CLIENT;
 
-CLIENT clients[256];
+CLIENT clients[256] = {};
 int numClients = 0;
+int unClients[256] = {};
 
-void clear()
+void clr()
 {
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 1; i++)
     {
         printf("\n");
     }
+}
+
+void delay(int ms){
+    clock_t start_time = clock();
+
+    while (clock() < start_time + ms * CLOCKS_PER_SEC / 1000)
+        ;
+}
+
+char getInput(){
+    char a;
+    a = getchar();
+    #ifdef DEV
+    printf("char: %d", a);
+    #endif
+    // Only consume rest of line if a != \n
+    if (a != '\n') {
+        while ((getchar()) != '\n');
+    }
+    return a;
+}
+
+void clearN(){
+    while ((getchar()) != '\n');
 }
 
 void createCl()
@@ -41,10 +69,10 @@ void createCl()
     printf("DNI: ");
     scanf("%s", dni);
 
-    printf("Nomre de telefón: ");
+    printf("Nombre de telefón: ");
     scanf("%d", &tel);
 
-    clear();
+    clr();
 
     printf("Nombre de client: %d\n", numClients);
     printf("Nom: %s\n", nom);
@@ -53,10 +81,11 @@ void createCl()
     printf("DNI: %s\n", dni);
     printf("Nombre de telefón: %d\n", tel);
 
-    getchar();
 
     printf("Son aquests valors correctes? (Y/n): ");
     scanf("%c", &ch);
+
+    clearN();
     if (ch == 'n') return;
 
     strcpy(clients[numClients].direcció, direcció);
@@ -73,8 +102,9 @@ void noCl(){
     char ch;
     printf("No hi ha clients en el sistema, vols crear-ne un? (y/N) ");
     scanf("%c", &ch);
+    clearN();
     if (ch == 'y' || ch == 'Y') createCl(); 
-    else clear();
+    else clr();
 }
 
 void modCl(int n)
@@ -88,53 +118,71 @@ void delCl(int n)
 void viewCl(int n)
 {
     char ch;
-    printf("Nombre de client: %d", n);
+    // printf("Nombre de client: %d\n", n);
     printf("Nom: %s\n", clients[n].nom);
     printf("Llinatges: %s %s\n", clients[n].llinatge1, clients[n].llinatge2);
     printf("Direcció: %s\n", clients[n].direcció);
     printf("DNI: %s\n", clients[n].dni);
-    printf("Nombre de telefón: %s\n", clients[n].tel);
+    printf("Nombre de telefón: %d\n", clients[n].tel);
+
 
     printf("Son aquests valors correctes? (Y/n): ");
-    scanf("%c", &ch);
-    if (ch == 'n') return;
+    ch = getInput();
+    if (ch != 'n') return;
+    modCl(n);
 }
 
 void listCl(){
+    char c;
     // printf("%d", numClients);
     if (numClients == 0) {noCl(); return;}
     for (int i = 0; i<numClients; i++){
         if (i>0 && i%10==0){
-            printf("Mostrant %d-%d/%d (10) (N)ext (P)revious (S)top\n",i-10, i-1, numClients-1);
-            char c;
-            scanf("%c", c);
+            printf("Mostrant %d-%d/%d (10) (N)ext (p)revious (q)uit\n",i-10, i-1, numClients-1);
+
+            c = getInput();
+            // printf("%c", c);
             switch (tolower(c))
             {
+            case '\n':
             case 'n':
+                clr();
                 break;
             case 'p':
-                if (i>10) i = i-10;
-                else printf("No es pot anar enrera, continuant");
+                if (i<19) {
+                    printf("No es pot anar enrera, continuant\n"); 
+                    delay(1000);
+                } else {
+                    i = i-20;
+                }
+                clr();
                 break;
-            case 's':
+            case 'q':
                 return;
+                break;
             default:
-                printf("Opció incorrecte, continuant");
+                printf("Opció incorrecte, continuant\n");
+                delay(1000);
                 break;
             }
         }
         printf("Client n. %d: %s %s, %s\n", i, clients[i].llinatge1, clients[i].llinatge2, clients[i].nom);
     }
+    
+    printf("Tots els usuaris actius mostrats, Tornar a començar? (y/N): ");
+    c = getInput();
+    if (tolower(c) != 'y') return;
+    listCl();
 }
 
 void populateCl(int n){
     for (int i = 0; i<n; i++){
 
-    sprintf(clients[numClients].direcció, "%d", 27*i);
-    sprintf(clients[numClients].dni, "%dF", 31*i);
-    sprintf(clients[numClients].llinatge1, "%dF", 23*i);
-    sprintf(clients[numClients].llinatge2, "%dF", 21*i);
-    sprintf(clients[numClients].nom, "%dF", 29*i);
+    sprintf(clients[numClients].direcció, "Carrer%d", 27*i+9);
+    sprintf(clients[numClients].dni, "%dF", 31*i+5);
+    sprintf(clients[numClients].llinatge1, "Pons%d", 23*i+7);
+    sprintf(clients[numClients].llinatge2, "Mer%d", 21*i+3);
+    sprintf(clients[numClients].nom, "Marc%d", 29*i+9);
     clients[numClients].tel = 17*i;
 
     numClients++;
@@ -146,8 +194,10 @@ void populateCl(int n){
 int main()
 {
     int op = 0;
+    int n;
 
     while (op != 6){
+        clr();
         printf("Tria una opció: \n");
         printf(" (1) Crear usuari\n");
         printf(" (2) Llista usuaris\n");
@@ -155,36 +205,44 @@ int main()
         printf(" (4) Modificar usuari\n");
         printf(" (5) Eliminar usuari\n");
         printf(" (6) Sortir\n");
+        #ifdef DEV
+        printf(" (9) Populate (DEV)\n");
+        #endif
+
         scanf("%d", &op);
-        getchar();
-        
+        clearN();
         switch (op)
         {
         case 1:
-            clear();
+            clr();
             createCl();
             break;
         
         case 2:
-            clear();
+            clr();
             listCl(); 
             break;
         case 3:
-            clear();
+            clr();
+            printf("Nombre del client a detallar: ");
+            scanf("%d", &n);
+            viewCl(n);
             break;
         case 4:
-            clear();
+            clr();
             break;
         case 5:
-            clear();
+            clr();
             break;
         case 6:
             printf("Exiting...");
             break;
+        #ifdef DEV
         case 9:
-            int n;
             scanf("%d", &n);
             populateCl(n);
+            break;
+        #endif
         default:
             printf("Opció no vàlida.");
             break;
