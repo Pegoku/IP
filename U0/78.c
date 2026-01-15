@@ -2,6 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <stdlib.h>
 
 #define DEV
 
@@ -111,25 +112,37 @@ void modCl(int n)
 {
     
     char nom[64], llinatge1[64], llinatge2[64], direcció[128], dni[16], ch;
+    char buffer[64];
     int tel;
 
     printf("Nom (%s): ", clients[n].nom);
-    scanf("%s", nom);
-    if (strlen(nom) <= 1) strcpy(nom, clients[n].nom);
+    fgets(nom, 64, stdin);
+    strtok(nom, "\n");
+    if (strlen(nom) == 0) strcpy(nom, clients[n].nom);
 
     printf("Llinatges (%s %s): ", clients[n].llinatge1, clients[n].llinatge2);
-    scanf("%s %s", llinatge1, llinatge2);
-    getchar(); // consume newline
+    fgets(llinatge1, 64, stdin);
+    strtok(llinatge1, "\n");
+    if (strlen(llinatge1) == 0) strcpy(llinatge1, clients[n].llinatge1);
+    
+    fgets(llinatge2, 64, stdin);
+    strtok(llinatge2, "\n");
+    if (strlen(llinatge2) == 0) strcpy(llinatge2, clients[n].llinatge2);
 
     printf("Direcció (%s): ", clients[n].direcció);
     fgets(direcció, 128, stdin);
     strtok(direcció, "\n");
+    if (strlen(direcció) == 0) strcpy(direcció, clients[n].direcció);
 
     printf("DNI (%s): ", clients[n].dni);
-    scanf("%s", dni);
+    fgets(dni, 16, stdin);
+    strtok(dni, "\n");
+    if (strlen(dni) == 0) strcpy(dni, clients[n].dni);
 
     printf("Nombre de telefón (%d): ", clients[n].tel);
-    scanf("%d", &tel);
+    fgets(buffer, 64, stdin);
+    if (strlen(buffer) > 1) tel = atoi(buffer);
+    else tel = clients[n].tel;
 
     clr();
 
