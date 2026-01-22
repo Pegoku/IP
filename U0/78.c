@@ -15,12 +15,12 @@ typedef struct client
 } CLIENT;
 
 CLIENT clients[256] = {};
-int numClients = 0;
+int numClients = 0, emptyClients = 0;
 int unClients[256] = {};
 
 void clr()
 {
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 1; i++)
     {
         printf("\n");
     }
@@ -32,6 +32,14 @@ void delay(int ms){
     while (clock() < start_time + ms * CLOCKS_PER_SEC / 1000)
         ;
 }
+
+int isDisabled(int clientId){
+    for (int i = 0; i<emptyClients; i++){
+        if (unClients[i] == clientId) return 1;
+    }
+    return 0;
+}
+
 
 char getInput(){
     char a;
@@ -75,7 +83,7 @@ void createCl()
 
     clr();
 
-    printf("Nombre de client: %d\n", numClients);
+    printf("Nombre de client: %d\n", nc);
     printf("Nom: %s\n", nom);
     printf("Llinatges: %s %s\n", llinatge1, llinatge2);
     printf("Direcció: %s\n", direcció);
@@ -89,14 +97,14 @@ void createCl()
     clearN();
     if (ch == 'n') return;
 
-    strcpy(clients[numClients].direcció, direcció);
-    strcpy(clients[numClients].dni, dni);
-    strcpy(clients[numClients].llinatge1, llinatge1);
-    strcpy(clients[numClients].llinatge2, llinatge2);
-    strcpy(clients[numClients].nom, nom);
-    clients[numClients].tel = tel;
+    strcpy(clients[nc].direcció, direcció);
+    strcpy(clients[nc].dni, dni);
+    strcpy(clients[nc].llinatge1, llinatge1);
+    strcpy(clients[nc].llinatge2, llinatge2);
+    strcpy(clients[nc].nom, nom);
+    clients[nc].tel = tel;
 
-    numClients++;
+    nc++;
 }
 
 void noCl(){
@@ -180,6 +188,17 @@ void modCl(int n)
 
 void delCl(int n)
 {
+    char c = 0;
+    printf("Segur que vols eliminar el client n.%d (%s %s, %s) (y/N)", n, clients[n].llinatge1, clients[n].llinatge2, clients[n].nom);
+    scanf("%c", &c);
+    clearN();
+    if (c != 'y' && c != 'Y') return;
+
+    unClients[emptyClients] = n;
+    emptyClients++;
+    printf("Client eliminat correctament.\n");
+    delay(1000);
+    
 }
 
 void viewCl(int n)
@@ -201,12 +220,14 @@ void viewCl(int n)
 
 void listCl(){
     char c;
-    // printf("%d", numClients);
+    int nc = 0;
+    printf("Hola"); 
+    printf("%d", numClients);
     if (numClients == 0) {noCl(); return;}
     for (int i = 0; i<numClients; i++){
         if (i>0 && i%10==0){
-            printf("Mostrant %d-%d/%d (10) (N)ext (p)revious (q)uit\n",i-10, i-1, numClients-1);
-
+            printf("Mostrant %d-%d/%d (%d) (N)ext (p)revious (q)uit\n",i-10, i-1, numClients-1, nc);
+            nc = 0;
             c = getInput();
             // printf("%c", c);
             switch (tolower(c))
@@ -233,7 +254,11 @@ void listCl(){
                 break;
             }
         }
-        printf("Client n. %d: %s %s, %s\n", i, clients[i].llinatge1, clients[i].llinatge2, clients[i].nom);
+        if (!isDisabled(i)) {
+        // if(1){
+            nc++;
+            printf("Client n. %d: %s %s, %s\n", i, clients[i].llinatge1, clients[i].llinatge2, clients[i].nom);
+        }
     }
     
     printf("Tots els usuaris actius mostrats, Tornar a començar? (y/N): ");
@@ -287,6 +312,7 @@ int main()
         
         case 2:
             clr();
+            printf("Hola2");
             listCl(); 
             break;
         case 3:
@@ -298,9 +324,18 @@ int main()
             break;
         case 4:
             clr();
+            printf("Nombre del client a modificar: ");
+            scanf("%d", &n);
+            clearN();
+            modCl(n);
             break;
         case 5:
             clr();
+            printf("Nombre del client a eliminar: ");
+            scanf("%d", &n);
+            clearN();
+            delCl(n);
+            break;
             break;
         case 6:
             printf("Exiting...");
@@ -322,3 +357,14 @@ int main()
     // createCl();
 
 }
+
+//Nombre de client: 50
+// Nom: 
+
+// Llinatges: pons 
+
+// Direcció: 
+
+// DNI: 969658547A
+// Nombre de telefón: 616253422
+// Son aquests valors correctes? (Y/n): 
