@@ -40,9 +40,9 @@ int isDisabled(int clientId){
     return 0;
 }
 void countClients(){
-    // for (int i = 0; i<256; i++){
-    //     if (strcmp(clients[i].nom, "")) numClients++;
-    // }
+    for (int i = 0; i<256; i++){
+        if (strcmp(clients[i].nom, "")) numClients++;
+    }
     printf("Importat %d clients",numClients);
 }
 
@@ -260,7 +260,7 @@ void viewCl(int n)
 void listCl(){
     char c;
     int nc = 0;
-    printf("Hola"); 
+    // printf("Hola"); 
     printf("%d", numClients);
     if (numClients == 0) {noCl(); return;}
     for (int i = 0; i<numClients; i++){
@@ -323,16 +323,17 @@ void populateCl(int n){
 }
 
 void importCl(){
+    printf("%d", numClients);
     FILE * fptr;
     if((fptr = fopen("clients.txt", "r"))==NULL) return;
-    fread(clients, sizeof(clients), 256, fptr);
+    fread(clients, sizeof(CLIENT), 256, fptr);
     fclose(fptr);
     countClients();
 
 }
 void exportCl(){
     FILE * fptr = fopen("clients.txt", "w");
-    fwrite(clients, sizeof(clients), 256, fptr);
+    fwrite(clients, sizeof(CLIENT), 256, fptr);
     fclose(fptr);
 }
 
@@ -369,7 +370,7 @@ int main()
         
         case 2:
             clr();
-            printf("Hola2");
+            // printf("Hola2");
             listCl(); 
             break;
         case 3:
