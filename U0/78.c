@@ -45,7 +45,7 @@ char getInput(){
     char a;
     a = getchar();
     #ifdef DEV
-    printf("char: %d", a);
+    // printf("char: %d", a);
     #endif
     // Only consume rest of line if a != \n
     if (a != '\n') {
@@ -63,12 +63,21 @@ void createCl()
 
     char nom[64], llinatge1[64], llinatge2[64], direcció[128], dni[16], ch;
     int tel;
+    int nc;
+    int reclient=0;
+    if(numClients){
+        nc = unClients[0];
+        numClients--;
+        reclient=1;
+    } else nc = numClients;
 
     printf("Nom: ");
     scanf("%s", nom);
 
-    printf("Llinatges: ");
-    scanf("%s %s", llinatge1, llinatge2);
+    printf("Llinatge1: ");
+    scanf("%s", llinatge1);
+    printf("Llinatge2: ");
+    scanf("%s", llinatge2);
     getchar(); // consume newline
 
     printf("Direcció: ");
@@ -104,7 +113,7 @@ void createCl()
     strcpy(clients[nc].nom, nom);
     clients[nc].tel = tel;
 
-    nc++;
+    if (!reclient) numClients++;
 }
 
 void noCl(){
@@ -123,29 +132,36 @@ void modCl(int n)
     char buffer[64];
     int tel;
 
+    if (isDisabled(n) || n>=numClients){
+        printf("Client no existeix.\n");
+        delay(2000);
+        return;
+    }
+
     printf("Nom (%s): ", clients[n].nom);
     fgets(nom, 64, stdin);
     strtok(nom, "\n");
-    if (strlen(nom) == 0) strcpy(nom, clients[n].nom);
+    if (strlen(nom) == 1) strcpy(nom, clients[n].nom);
 
-    printf("Llinatges (%s %s): ", clients[n].llinatge1, clients[n].llinatge2);
+    printf("Llinatge1 (%s): ", clients[n].llinatge1);
     fgets(llinatge1, 64, stdin);
     strtok(llinatge1, "\n");
-    if (strlen(llinatge1) == 0) strcpy(llinatge1, clients[n].llinatge1);
+    if (strlen(llinatge1) == 1) strcpy(llinatge1, clients[n].llinatge1);
     
+    printf("Llinatge2 (%s): ", clients[n].llinatge2);
     fgets(llinatge2, 64, stdin);
     strtok(llinatge2, "\n");
-    if (strlen(llinatge2) == 0) strcpy(llinatge2, clients[n].llinatge2);
+    if (strlen(llinatge2) == 1) strcpy(llinatge2, clients[n].llinatge2);
 
     printf("Direcció (%s): ", clients[n].direcció);
     fgets(direcció, 128, stdin);
     strtok(direcció, "\n");
-    if (strlen(direcció) == 0) strcpy(direcció, clients[n].direcció);
+    if (strlen(direcció) == 1) strcpy(direcció, clients[n].direcció);
 
     printf("DNI (%s): ", clients[n].dni);
     fgets(dni, 16, stdin);
     strtok(dni, "\n");
-    if (strlen(dni) == 0) strcpy(dni, clients[n].dni);
+    if (strlen(dni) == 1) strcpy(dni, clients[n].dni);
 
     printf("Nombre de telefón (%d): ", clients[n].tel);
     fgets(buffer, 64, stdin);
@@ -188,6 +204,12 @@ void modCl(int n)
 
 void delCl(int n)
 {
+
+    if (isDisabled(n) || n>=numClients){
+        printf("Client no existeix.\n");
+        delay(2000);
+        return;
+    }
     char c = 0;
     printf("Segur que vols eliminar el client n.%d (%s %s, %s) (y/N)", n, clients[n].llinatge1, clients[n].llinatge2, clients[n].nom);
     scanf("%c", &c);
@@ -197,12 +219,17 @@ void delCl(int n)
     unClients[emptyClients] = n;
     emptyClients++;
     printf("Client eliminat correctament.\n");
-    delay(1000);
+    delay(2000);
     
 }
 
 void viewCl(int n)
 {
+    if (isDisabled(n) || n>=numClients){
+        printf("Client no existeix.\n");
+        delay(2000);
+        return;
+    }
     char ch;
     // printf("Nombre de client: %d\n", n);
     printf("Nom: %s\n", clients[n].nom);
