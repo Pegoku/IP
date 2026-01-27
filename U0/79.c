@@ -43,7 +43,7 @@ void countClients(){
     // for (int i = 0; i<256; i++){
     //     if (strcmp(clients[i].nom, "")) numClients++;
     // }
-    printf("%d",numClients);
+    printf("Importat %d clients",numClients);
 }
 
 void shiftUnclients(){
