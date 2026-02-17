@@ -4,7 +4,7 @@
 
 int main() {
     FILE* fptr = fopen("file.txt", "a");
-    char a[128], b[64], c[64], n[4] = {'\n'};
+   char a[128], b[64], c[64], n[4] = {'\n'};
 
     printf("Introdueix un nombre: ");
     scanf("%s", b);
